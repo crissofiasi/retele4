@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DiffieHellman
 {
@@ -46,7 +47,6 @@ namespace DiffieHellman
             
         }
 
-        
         public int B
         {
             get { return (int)(Math.Pow(G, b) % p); }
@@ -54,12 +54,11 @@ namespace DiffieHellman
         }
 
         private int _a;
-
         public int a
         {
             get { return _a; }
             set { _a = value;
-                propChanged(nameof(a));
+                propChanged();
                 propChanged(nameof(A));
                 propChanged(nameof(B));
                 propChanged(nameof(sa));
@@ -68,7 +67,6 @@ namespace DiffieHellman
         }
 
         private int _b;
-
         public int b
         {
             get { return _b; }
@@ -81,7 +79,6 @@ namespace DiffieHellman
 
             }
         }
-
        
         public int sa
         {
@@ -96,7 +93,6 @@ namespace DiffieHellman
 
         }
 
-
         public viewmodel()
         {
             p = 23;
@@ -104,17 +100,13 @@ namespace DiffieHellman
             a = 6;
             b = 15;
         }
-
-
-
-
-
-
+        
         #region inotify
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
-        private void propChanged(string name)
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void propChanged([CallerMemberName] string name="")
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(name));
+            if (PropertyChanged!= null)
+             PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
         #endregion
 
